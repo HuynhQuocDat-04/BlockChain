@@ -45,7 +45,16 @@ export default function App() {
   }, [])
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#f7fafc' }}>
+    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#f7fafc', position: 'relative' }}>
+      {/* Top-right connect/disconnect button */}
+      <div style={{ position: 'fixed', top: 16, right: 16 }}>
+        <button onClick={address ? onDisconnect : onConnect} disabled={loading || !supported} style={{
+          padding: '10px 14px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600
+        }}>
+          {loading ? (address ? 'Disconnecting…' : 'Connecting…') : (address ? 'Disconnect' : 'Connect wallet')}
+        </button>
+      </div>
+
       <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 24, width: 360 }}>
         <h1 style={{ marginTop: 0, marginBottom: 16 }}>Wallet Frontend</h1>
         {!supported && (
@@ -53,11 +62,6 @@ export default function App() {
             No wallet detected. Please install MetaMask.
           </div>
         )}
-        <button onClick={address ? onDisconnect : onConnect} disabled={loading || !supported} style={{
-          width: '100%', padding: '10px 14px', background: '#2563eb', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600
-        }}>
-          {loading ? (address ? 'Disconnecting…' : 'Connecting…') : (address ? 'Disconnect' : 'Connect wallet')}
-        </button>
         <div style={{ marginTop: 16, fontSize: 14, color: '#334155' }}>
           <div><strong>Address:</strong> {address ?? '—'}</div>
           <div><strong>Chain ID:</strong> {chainId ?? '—'}</div>
