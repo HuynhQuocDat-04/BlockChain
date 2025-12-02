@@ -1,0 +1,18 @@
+{
+  "name": "wallet-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/frontend",
+    "services/api"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm:start-frontend\" \"npm:start-api\"",
+    "start-frontend": "npm --prefix apps/frontend start",
+    "start-api": "npm --prefix services/api run dev",
+    "build": "npm --prefix services/api run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
