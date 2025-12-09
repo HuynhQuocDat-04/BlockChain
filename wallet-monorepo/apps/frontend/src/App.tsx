@@ -7,6 +7,13 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const shortAddress = (addr: string | null) => {
+    if (!addr) return '—'
+    const head = addr.slice(0, 6)
+    const tail = addr.slice(-6)
+    return `${head}…${tail}`
+  }
+
   const onConnect = async () => {
     setLoading(true)
     setError(null)
@@ -45,7 +52,19 @@ export default function App() {
   }, [])
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#f7fafc', position: 'relative' }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: '#f7fafc',
+        position: 'relative',
+        paddingTop: 72, // space for the top-right button
+        paddingRight: 16,
+        paddingLeft: 16,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+      }}
+    >
       {/* Top-right connect/disconnect button */}
       <div style={{ position: 'fixed', top: 16, right: 16 }}>
         <button onClick={address ? onDisconnect : onConnect} disabled={loading || !supported} style={{
@@ -54,16 +73,16 @@ export default function App() {
           {loading ? (address ? 'Disconnecting…' : 'Connecting…') : (address ? 'Disconnect' : 'Connect wallet')}
         </button>
       </div>
-
-      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 24, width: 360 }}>
-        <h1 style={{ marginTop: 0, marginBottom: 16 }}>Wallet Frontend</h1>
+      <div style={{ background: 'transparent', border: 'none', borderRadius: 0, padding: 0, width: 'auto', boxShadow: 'none' }}>
         {!supported && (
           <div style={{ padding: 12, background: '#fff3cd', color: '#664d03', border: '1px solid #ffecb5', borderRadius: 8, marginBottom: 12 }}>
             No wallet detected. Please install MetaMask.
           </div>
         )}
-        <div style={{ marginTop: 16, fontSize: 14, color: '#334155' }}>
-          <div><strong>Address:</strong> {address ?? '—'}</div>
+        <div style={{ marginTop: 8, fontSize: 14, color: '#334155' }}>
+          <div>
+            <strong>Address:</strong> <span title={address ?? ''}>{shortAddress(address)}</span>
+          </div>
           <div><strong>Chain ID:</strong> {chainId ?? '—'}</div>
         </div>
         {error && <div style={{ marginTop: 12, color: '#b91c1c' }}>{error}</div>}
